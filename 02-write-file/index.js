@@ -32,9 +32,6 @@ function write(fp) {
         writableStream.on('finish', () => {
             console.log(`Input written to ${fp}`);
         })
-        setTimeout(() => {
-            process.exit(0);
-        }, 100);
     });
 }
 
