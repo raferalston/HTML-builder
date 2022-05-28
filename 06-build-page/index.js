@@ -54,14 +54,14 @@ fs.promises.readdir(componentsDir, {withFileTypes: true})
             if (err) {
                 fs.promises.writeFile(mainPath + '/project-dist/index.html', temp, err => {
                     if (err) {
-                        return console.error(err);
+                        // return console.error(err);
                     }
                 })
                 return
             }
             fs.promises.writeFile(mainPath + '/project-dist/index.html', temp, err => {
                 if (err) {
-                    return console.error(err);
+                    // return console.error(err);
                 }
             })
         });
@@ -82,7 +82,7 @@ function getCopyFiles(dir) {
     .then(
         filenames => {
         for (let filename of filenames) {
-            let fileDir = path.join(dir, filename.name).replace('\\assets\\', '\\project-dist\\assets\\')
+            let fileDir = path.join(dir, filename.name).replace('/assets/', '/project-dist/assets/')
             if (!filename.isDirectory()) {
                 writeData(path.join(dir, filename.name), fileDir)
             } else {
@@ -95,7 +95,7 @@ function getCopyFiles(dir) {
 function writeData(sourcePath, finalPath) {
     fs.copyFile(sourcePath, finalPath, (err) => {
         if (err) {
-            console.log(`Error occurred: ${err}`);
+            // console.log(`Error occurred: ${err}`);
         }
     });
 }
@@ -106,10 +106,10 @@ function createDirectoriesForCopy(dir) {
     .then(
         filenames => {
         for (let filename of filenames) {
-            let fileDir = path.join(dir, filename.name).replace('\\assets\\', '\\project-dist\\assets\\')
+            let fileDir = path.join(dir, filename.name).replace('/assets/', '/project-dist/assets/')
             if (filename.isDirectory()) {
                 fs.promises.mkdir(fileDir, { recursive: true }, (err) => {
-                    console.log(err);
+                    // console.log(err);
                 })
                 .then(e => {
                     getCopyFiles(dir)
@@ -131,7 +131,7 @@ async function getFiles(dir) {
                     if (!filename.isDirectory()) {
                         let fileExt = path.parse(filename.name).ext
                         if (fileExt === '.css') {
-                            let cssFile = `${folder}\\` + path.parse(filename.name).base
+                            let cssFile = `${folder}/` + path.parse(filename.name).base
                             await readCssFile(cssFile);
                         }
                     }
@@ -141,12 +141,12 @@ async function getFiles(dir) {
 
 async function readCssFile(fileName) {
     const file = await fs.promises.readFile(fileName, 'utf8');
-    const resPath = `${resultPath}\\style.css`
+    const resPath = `${resultPath}/style.css`
     await fs.promises.appendFile(resPath, file);
 }
 
 function existsFile() {
-    const path = `${resultPath}\\style.css`
+    const path = `${resultPath}/style.css`
     fs.access(path, error => {
         if (error) {
             return
